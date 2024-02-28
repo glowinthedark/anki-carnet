@@ -196,13 +196,12 @@
 
                 document.getElementById('nav').innerHTML=`<p>total preguntas: ${zeData.length}</p>`;
 
-                zeData.forEach((r) => {
+                zeData.forEach((r, idx) => {
 
                         var par = document.createElement('div');
-
-
+                        
                         par.innerHTML = `
-<p class="idx"></p>
+<p class="idx">${idx}</p>
 <p class="que">${r.pregunta}</p>
   <ol>
     <li${r.correcta == '1 0 0' ? ' data-y="1"' : ''}>${r.a}</li>
