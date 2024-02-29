@@ -17,6 +17,11 @@
             font-size: 108%;
         }
 
+        header {
+            text-align: center;
+            color: #747474;
+        }
+
         .wrapper {
             max-width: 1000px;
             margin-left: auto;
@@ -109,6 +114,7 @@
         }
 
         details[open] {
+            text-transform:lowercase;
             padding: 0 2em 1em 2em;
             line-height: 140%;
             font-size: 16pt;
@@ -129,11 +135,12 @@
         }
 
         #nav a {
-            padding: 0.4em;
-            margin: 0.2em;
-            font-size: 8pt;
-            display: inline;
+            color: goldenrod;
         }
+        #nav a:hover {
+            color: #da6e20;
+        }
+
 
         .fig {
             display: block;
@@ -178,6 +185,7 @@
         <p id="stats" >0/0</p>
     </div>
     <header id="nav"></header>
+        
 
     <div class="wrapper">
         <div id="content"></div>
@@ -189,17 +197,28 @@
     <script>
         var nav = document.getElementById('nav');
 
-        fetch('data/data_B.json')
+        let url = new URL(document.location.href);
+        let params = new URLSearchParams(url.search);
+        let licenseType = params.get('type') === 'a1' ? 'A1' : 'B';
+
+        fetch(`data/data_${licenseType}.json`)
             .then(resp => resp.json())
             .then(zeData => {
                 var contentDiv = document.getElementById("content");
 
-                document.getElementById('nav').innerHTML=`<p>total preguntas: ${zeData.length}</p>`;
+                var altType = licenseType == 'A1'? 'b' : 'a1';
+                document.getElementById('nav').innerHTML=`<b>Permiso ${licenseType}:</b> 
+                total preguntas: ${zeData.length}&nbsp;&nbsp;|&nbsp;&nbsp;<a href="?type=${altType}">Permiso ${altType.toLocaleUpperCase()}</a>
+                `;
 
                 zeData.forEach((r, idx) => {
 
                         var par = document.createElement('div');
-                        
+                        var _explication = r.explicacion ?
+`<details><summary></summary>
+${r.explicacion}
+</details>
+` : '';
                         par.innerHTML = `
 <p class="idx">${idx}</p>
 <p class="que">${r.pregunta}</p>
@@ -209,11 +228,9 @@
     <li${r.correcta == '0 0 1' ? ' data-y="1"' : ''}>${r.c}</li>
   </ol>
 <div>
-  <img loading="lazy" src="images/B/${r.img}">
+  <img loading="lazy" src="images/${licenseType}/${r.img}">
 </div>
-<details><summary></summary>
-${r.explicacion}
-</details>
+${_explication}
 <a class="ans" href="#">${r.correcta}</a>
 `;
                 contentDiv.appendChild(par);
