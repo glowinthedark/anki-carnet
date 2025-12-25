@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Import the necessary modules
 import json
 import genanki
@@ -82,9 +84,9 @@ for item in data:
         item["question"],
         f'<img src="{img}">',
         "2",  # QType
-        item["a."],
-        item["b."],
-        item["c."],
+        item["a"],
+        item["b"],
+        item["c"],
         item["correct"],
         item["explanation"],
     ]
