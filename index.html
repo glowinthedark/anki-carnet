@@ -199,39 +199,38 @@
 
         let url = new URL(document.location.href);
         let params = new URLSearchParams(url.search);
-        let licenseType = params.get('type') === 'a1' ? 'A1' : 'B';
+        let licenseType = params.get('type')
 
         fetch(`data/data_${licenseType}.json`)
             .then(resp => resp.json())
             .then(zeData => {
                 var contentDiv = document.getElementById("content");
 
-                var altType = licenseType == 'A1'? 'b' : 'a1';
                 document.getElementById('nav').innerHTML=`<b>Permiso ${licenseType}:</b> 
-                total preguntas: ${zeData.length}&nbsp;&nbsp;|&nbsp;&nbsp;<a href="?type=${altType}">Permiso ${altType.toLocaleUpperCase()}</a>
+                total preguntas: ${zeData.length}
                 `;
 
                 zeData.forEach((r, idx) => {
 
                         var par = document.createElement('div');
-                        var _explication = r.explicacion ?
+                        var _explication = r.explanation ?
 `<details><summary></summary>
-${r.explicacion}
+${r.explanation}
 </details>
 ` : '';
                         par.innerHTML = `
 <p class="idx">${idx}</p>
-<p class="que">${r.pregunta}</p>
+<p class="que">${r.question}</p>
   <ol>
-    <li${r.correcta == '1 0 0' ? ' data-y="1"' : ''}>${r.a}</li>
-    <li${r.correcta == '0 1 0' ? ' data-y="1"' : ''}>${r.b}</li>
-    <li${r.correcta == '0 0 1' ? ' data-y="1"' : ''}>${r.c}</li>
+    <li${r.correct == '1 0 0' ? ' data-y="1"' : ''}>${r.a}</li>
+    <li${r.correct == '0 1 0' ? ' data-y="1"' : ''}>${r.b}</li>
+    <li${r.correct == '0 0 1' ? ' data-y="1"' : ''}>${r.c}</li>
   </ol>
 <div>
   <img loading="lazy" src="https://f002.backblazeb2.com/file/imatgas/${licenseType}/${r.img}">
 </div>
 ${_explication}
-<a class="ans" href="#">${r.correcta}</a>
+<a class="ans" href="#">${r.correct}</a>
 `;
                 contentDiv.appendChild(par);
                 }
